@@ -30,7 +30,7 @@ class Circle:
         return self.radius>other.radius
     
     def __add__ (self, other):
-        center= (self.center[0]+other.center[0],self.center[1],other.center[1])
+        center= (self.center[0]+other.center[0],self.center[1]+other.center[1])
         return Circle(center,self.radius+other.radius)
     
     def draw(self,color, x_lim= (-1,1), y_lim= (-1,1)):
@@ -63,12 +63,11 @@ if __name__ == '__main__':
     circle0= Circle((-7,0),3.14)
     circle1= Circle((2,3),5)
     circle2= Circle((1,2),1)
-    c= circle_utils.CircleUtils(circle0,circle1,circle2)
-    #c.sort("area")
-    c.print()
-    c.draw(['red','blue','white'], (-10,10), (-10,10))
     
-    #c.print()
-    # circle.print()
-    # circle.draw('r', (-5,5), (-5,5))
+    circles= [circle0,circle1,circle2]
+    
+    circle_utils.CircleUtils.print(circles)
+    circle_utils.CircleUtils.sort(circles, sort_field= "area")
+    circle_utils.CircleUtils.draw(circles, colors= ['red','blue','white'], x_lim= (-10,10), y_lim= (-10,10))
+    
     

@@ -1,27 +1,32 @@
 
 import matplotlib.pyplot as plt
 
-
 class CircleUtils:
     
-    def __init__(self, *args):
-        self.circles= []
+    @staticmethod
+    def __list_circles__(*args):
+        args= args[0]
+        circles= []
         for circle in args:
             if(type(circle) is list):
                 for c in circle:
-                    self.circles.append(c)
+                    circles.append(c)
             else:     
-                self.circles.append(circle)
-            
-            
-    def sort(self, sort_field, sort_reversed=False):
-        self.circles= sorted(self.circles, key = lambda x: getattr(x,sort_field), reverse= sort_reversed)
-        return self.circles
+                circles.append(circle)
+        return circles
     
-    def draw(self,colors, x_lim= (-1,1), y_lim= (-1,1)):
+    @staticmethod      
+    def sort(*args, sort_field, sort_reversed=False):
+        circles= CircleUtils.__list_circles__(args)
+        circles= sorted(circles, key = lambda x: getattr(x,sort_field), reverse= sort_reversed)
+        return circles
+    
+    @staticmethod
+    def draw(*args, colors, x_lim= (-1,1), y_lim= (-1,1)):
+        circles= CircleUtils.__list_circles__(args)
         circles_to_draw= []
         color= None
-        for i,circle in enumerate(self.circles):
+        for i,circle in enumerate(circles):
             if i < len(colors):
                 color= colors[i]
             else:
@@ -33,7 +38,9 @@ class CircleUtils:
         ax.set_xlim(x_lim[0],x_lim[1])
         ax.set_ylim(y_lim[0],y_lim[1])
         plt.show()
-
-    def print(self):
-        for circle in self.circles:
+        
+    @staticmethod
+    def print(*args):
+        circles= CircleUtils.__list_circles__(args)
+        for circle in circles:
             circle.print()
