@@ -43,8 +43,6 @@ class HowdoAIV_MainWindow(QMainWindow):
         self.layouts['header']= QHBoxLayout()
         self.header.setLayout(self.layouts['header'])
         
-       
-      
         
             #main title
         self.main_title= QLabel(title, self.header)
@@ -71,13 +69,13 @@ class HowdoAIV_MainWindow(QMainWindow):
             #textarea
         self.output_area= QTextEdit("<b>How do I?</b>\n",self.body)
         self.input_area= QLineEdit(self.body)
+        self.input_area.returnPressed.connect(self.howdoAIV_send_request)
         
         
         #header layout management
         
         self.layouts['window'].addWidget(self.header)
         self.layouts['window'].addWidget(self.body)
-
         
         self.layouts['header'].addWidget(self.main_title)
         self.layouts['header'].addWidget(self.main_menu)
@@ -89,15 +87,12 @@ class HowdoAIV_MainWindow(QMainWindow):
         self.layouts['body'].addWidget(self.output_area)
         self.layouts['body'].addWidget(self.input_area)
         
-        
-    
         self.body.move(0,100)
         self.show()
         self.body.hide()
             
         
     def search_btn_clicked(self):
-        
         if not self.full_size_app:
             self.current_height= self.default_height
             self.anim_timer.start()
@@ -116,6 +111,10 @@ class HowdoAIV_MainWindow(QMainWindow):
         
     def quit_btn_clicked(self):
         self.app.quit()
+        
+    def howdoAIV_send_request(self):
+        query= self.howdoi_parser.howdoAIV_query(self.input_area.text())
+        self.output_area.setText(query)
         
 
 
