@@ -24,7 +24,7 @@ QLabel {
 }
 
 
-QPushButton:hover {
+QPushButton:hover#menu_btn {
 
 
     color: black;
@@ -33,7 +33,7 @@ QPushButton:hover {
 
 }
 
-QPushButton{
+QPushButton#menu_btn {
 
     width: 100px;
     height: 50 px;
@@ -46,6 +46,28 @@ QPushButton{
     font-family: "Times New Roman", Times, serif;
 
     
+}
+
+QPushButton#input_btn {
+
+    width: 40px;
+    height: 40px;
+    margin-right: 30px;
+    margin-bottom: 20px;
+    color:white;
+    background-color: #9e1b11;
+    border-radius: 10px;
+    border: 2px solid black;
+
+    
+}
+
+QPushButton:hover#input_btn {
+
+
+    background-color:green;
+    border-color: white;
+
 }
 
 QTextEdit {

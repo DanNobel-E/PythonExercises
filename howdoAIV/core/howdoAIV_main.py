@@ -28,21 +28,21 @@ class HowdoAIV_MainWindow(QMainWindow):
         
         
         #stylesheet management 
-        with open('..\stylesheets\window.qss','r') as stylesheet:
+        with open("..\stylesheets\window.qss","r") as stylesheet:
             self._style = stylesheet.read()
         self.setStyleSheet(self._style)
         
         #layouts dictionary
         self.layouts= {}
-        self.layouts['window']= QVBoxLayout()
-        self.setLayout(self.layouts['window'])
+        self.layouts["window"]= QVBoxLayout()
+        self.setLayout(self.layouts["window"])
         
         #header
         self.header = QWidget(self)
         self.header.resize(600,100)
         self.header.setObjectName("header")
-        self.layouts['header']= QHBoxLayout()
-        self.header.setLayout(self.layouts['header'])
+        self.layouts["header"]= QHBoxLayout()
+        self.header.setLayout(self.layouts["header"])
         
         
             #main title
@@ -51,46 +51,63 @@ class HowdoAIV_MainWindow(QMainWindow):
         self.main_menu= QWidget(self.header)
         self.search_btn = QPushButton("SEARCH", self.main_menu)
         self.search_btn.clicked.connect(self.search_btn_clicked)
+        self.search_btn.setObjectName("menu_btn")
         
         self.about_btn= QPushButton("ABOUT", self.main_menu)
         self.about_btn.clicked.connect(self.about_btn_clicked)
+        self.about_btn.setObjectName("menu_btn")
         
         self.quit_btn= QPushButton("QUIT", self.main_menu)
         self.quit_btn.clicked.connect(self.quit_btn_clicked)
-        self.layouts['main_menu']= QHBoxLayout()
-        self.main_menu.setLayout(self.layouts['main_menu'])
+        self.quit_btn.setObjectName("menu_btn")
+        
+        
+        self.layouts["main_menu"]= QHBoxLayout()
+        self.main_menu.setLayout(self.layouts["main_menu"])
         
          #body
         self.body= QWidget(self)
         self.body.resize(600,700)
         self.body.setObjectName("body")
-        self.layouts['body']= QVBoxLayout()
-        self.body.setLayout(self.layouts['body'])
+        self.layouts["body"]= QVBoxLayout()
+        self.body.setLayout(self.layouts["body"])
         
-            #textarea
+            #outputarea
         self.output_area= QTextEdit(self.howdoi_default_msg,self.body)
-        self.input_area= QLineEdit(self.body)
-        self.input_area.returnPressed.connect(self.howdoAIV_send_request)
+        self.output_area.setReadOnly(True)
         
+            #inputarea
+        self.input_area= QWidget(self.body)
+        self.layouts["input_area"]= QHBoxLayout()
+        self.input_area.setLayout(self.layouts["input_area"])
+        
+        self.input_line= QLineEdit(self.input_area)
+        self.input_line.returnPressed.connect(self.howdoAIV_send_request)
+        
+        self.input_btn= QPushButton(self.input_area)
+        self.input_btn.clicked.connect(self.howdoAIV_send_request)
+        self.input_btn.setObjectName("input_btn")
         
         #header layout management
         
-        self.layouts['window'].addWidget(self.header)
-        self.layouts['window'].addWidget(self.body)
+        self.layouts["window"].addWidget(self.header)
+        self.layouts["window"].addWidget(self.body)
         
-        self.layouts['header'].addWidget(self.main_title)
-        self.layouts['header'].addWidget(self.main_menu)
+        self.layouts["header"].addWidget(self.main_title)
+        self.layouts["header"].addWidget(self.main_menu)
         
-        self.layouts['main_menu'].addWidget(self.search_btn)
-        self.layouts['main_menu'].addWidget(self.about_btn)
-        self.layouts['main_menu'].addWidget(self.quit_btn)
+        self.layouts["main_menu"].addWidget(self.search_btn)
+        self.layouts["main_menu"].addWidget(self.about_btn)
+        self.layouts["main_menu"].addWidget(self.quit_btn)
         
-        self.layouts['body'].addWidget(self.output_area)
-        self.layouts['body'].addWidget(self.input_area)
+        self.layouts["body"].addWidget(self.output_area)
+        self.layouts["body"].addWidget(self.input_area)
+        
+        self.layouts["input_area"].addWidget(self.input_line)
+        self.layouts["input_area"].addWidget(self.input_btn)
         
         self.body.move(0,100)
         self.show()
-        self.body.hide()
             
         
     def search_btn_clicked(self):
@@ -105,25 +122,25 @@ class HowdoAIV_MainWindow(QMainWindow):
                 self.setFixedHeight(self.current_height)
             self.setFixedHeight(self.full_size_height)
             self.full_size_app= True
-            self.body.show()
         
     def about_btn_clicked(self):
-        webbrowser.open('https://github.com/gleitz/howdoi') 
+        webbrowser.open("https://github.com/gleitz/howdoi") 
         
     def quit_btn_clicked(self):
         self.app.quit()
         
     def howdoAIV_send_request(self):
-        text=self.input_area.text()
-        query= self.howdoi_parser.howdoAIV_query(text)
-        text= "<b><font color= \"green\">" +text +"</font><b>:<br><br>"
-        self.output_area.setText(self.howdoi_default_msg + text + query)
-        self.input_area.clear()
+        text=self.input_line.text()
+        if text != "":
+            query= self.howdoi_parser.howdoAIV_query(text)
+            text= "<b><font color= \"green\">" +text +"</font><b>:<br><br>"
+            self.output_area.setText(self.howdoi_default_msg + text + query)
+            self.input_line.clear()
         
 
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app= QApplication(sys.argv)
     window_w=600
     window_h=100
