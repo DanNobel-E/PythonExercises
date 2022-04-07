@@ -1,6 +1,6 @@
 from howdoAIV_howdoi_parser import HowdoAIV_Parser
-from howdoAIV_custom_widgets import HowdoAIV_Button, HowdoAIV_Timer
-from PySide2.QtWidgets import (QApplication, QMainWindow, QLabel, QWidget, QHBoxLayout, QVBoxLayout, QTextEdit, QLineEdit, QScrollArea)
+from howdoAIV_utils import HowdoAIV_Timer
+from PySide2.QtWidgets import (QApplication, QMainWindow, QLabel, QWidget, QHBoxLayout, QVBoxLayout, QTextEdit, QLineEdit, QPushButton)
 from math import floor
 import webbrowser
 import sys
@@ -23,6 +23,7 @@ class HowdoAIV_MainWindow(QMainWindow):
         self.anim_timer= HowdoAIV_Timer(0.25)
         self.setFixedSize(width,height)
         self.howdoi_parser= HowdoAIV_Parser()
+        self.howdoi_default_msg= "<b><font color= \"red\">How do I?</font></b> "
         self.move(self.x,self.y)
         
         
@@ -48,13 +49,13 @@ class HowdoAIV_MainWindow(QMainWindow):
         self.main_title= QLabel(title, self.header)
             #main menu
         self.main_menu= QWidget(self.header)
-        self.search_btn = HowdoAIV_Button("SEARCH", self.main_menu)
+        self.search_btn = QPushButton("SEARCH", self.main_menu)
         self.search_btn.clicked.connect(self.search_btn_clicked)
         
-        self.about_btn= HowdoAIV_Button("ABOUT", self.main_menu)
+        self.about_btn= QPushButton("ABOUT", self.main_menu)
         self.about_btn.clicked.connect(self.about_btn_clicked)
         
-        self.quit_btn= HowdoAIV_Button("QUIT", self.main_menu)
+        self.quit_btn= QPushButton("QUIT", self.main_menu)
         self.quit_btn.clicked.connect(self.quit_btn_clicked)
         self.layouts['main_menu']= QHBoxLayout()
         self.main_menu.setLayout(self.layouts['main_menu'])
@@ -67,7 +68,7 @@ class HowdoAIV_MainWindow(QMainWindow):
         self.body.setLayout(self.layouts['body'])
         
             #textarea
-        self.output_area= QTextEdit("<b>How do I?</b>\n",self.body)
+        self.output_area= QTextEdit(self.howdoi_default_msg,self.body)
         self.input_area= QLineEdit(self.body)
         self.input_area.returnPressed.connect(self.howdoAIV_send_request)
         
@@ -113,8 +114,11 @@ class HowdoAIV_MainWindow(QMainWindow):
         self.app.quit()
         
     def howdoAIV_send_request(self):
-        query= self.howdoi_parser.howdoAIV_query(self.input_area.text())
-        self.output_area.setText(query)
+        text=self.input_area.text()
+        query= self.howdoi_parser.howdoAIV_query(text)
+        text= "<b><font color= \"green\">" +text +"</font><b>:<br><br>"
+        self.output_area.setText(self.howdoi_default_msg + text + query)
+        self.input_area.clear()
         
 
 

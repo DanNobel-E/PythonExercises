@@ -1,11 +1,9 @@
-from encodings import search_function
 from howdoi import howdoi
 
 class HowdoAIV_Parser:
-    def __init__(self):
+    def __init__(self, search_engine = 'google'):
         self.parser= howdoi.get_parser()
-        
+        self.search_engine= search_engine
     
     def howdoAIV_query(self,query)->str:
-        #args = self.parser.parse_args(query.split(' '))
-        return howdoi.howdoi(query + " -e google" )
+        return howdoi.howdoi(query + " -e " + self.search_engine)
