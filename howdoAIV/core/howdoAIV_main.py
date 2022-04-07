@@ -147,5 +147,5 @@ if __name__ == "__main__":
     window_x= app.primaryScreen().size().width() *0.5 - window_w*0.5
     window_y= 100
     window= HowdoAIV_MainWindow("HowdoAIV",app, window_x, window_y, window_w, window_h)
-    app.exec_()
+    sys.exit(app.exec_())
     
